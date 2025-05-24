@@ -2,6 +2,11 @@
 
 一个功能强大的NAS系统，专为中国用户优化，提供完整的存储管理和应用部署解决方案。
 
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/yuandexiaorong/nas-system)
+![GitHub repo size](https://img.shields.io/github/repo-size/yuandexiaorong/nas-system)
+![GitHub language count](https://img.shields.io/github/languages/count/yuandexiaorong/nas-system)
+![GitHub top language](https://img.shields.io/github/languages/top/yuandexiaorong/nas-system)
+
 ## 主要特性
 
 - ZFS文件系统支持
