@@ -1,8 +1,10 @@
 import express from 'express';
-import { MirrorManager } from './utils/mirrors';
 import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
+import fileSystemRoutes from './routes/fileSystem';
+import dockerRoutes from './routes/docker';
+import { MirrorManager } from './utils/mirrors';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -21,74 +23,50 @@ app.get('/api/mirrors', (req, res) => {
   res.json(mirrors);
 });
 
-app.post('/api/mirrors/docker', async (req, res) => {
+app.post('/api/mirrors/:type', async (req, res) => {
   try {
     const mirrorManager = MirrorManager.getInstance();
-    await mirrorManager.configureDockerMirror(req.body.url);
-    res.json({ message: 'Docker镜像配置成功' });
-  } catch (error) {
-    res.status(500).json({ error: '配置Docker镜像失败' });
-  }
-});
+    const { type } = req.params;
+    const { url } = req.body;
 
-app.post('/api/mirrors/npm', async (req, res) => {
-  try {
-    const mirrorManager = MirrorManager.getInstance();
-    await mirrorManager.configureNpmMirror(req.body.url);
-    res.json({ message: 'NPM镜像配置成功' });
-  } catch (error) {
-    res.status(500).json({ error: '配置NPM镜像失败' });
-  }
-});
-
-app.post('/api/mirrors/pip', async (req, res) => {
-  try {
-    const mirrorManager = MirrorManager.getInstance();
-    await mirrorManager.configurePipMirror(req.body.url);
-    res.json({ message: 'PIP镜像配置成功' });
-  } catch (error) {
-    res.status(500).json({ error: '配置PIP镜像失败' });
-  }
-});
-
-app.post('/api/mirrors/apt', async (req, res) => {
-  try {
-    const mirrorManager = MirrorManager.getInstance();
-    await mirrorManager.configureAptMirror(req.body.url);
-    res.json({ message: 'APT源配置成功' });
-  } catch (error) {
-    res.status(500).json({ error: '配置APT源失败' });
-  }
-});
-
-app.post('/api/mirrors/composer', async (req, res) => {
-  try {
-    const mirrorManager = MirrorManager.getInstance();
-    await mirrorManager.configureComposerMirror(req.body.url);
-    res.json({ message: 'Composer镜像配置成功' });
-  } catch (error) {
-    res.status(500).json({ error: '配置Composer镜像失败' });
-  }
-});
-
-app.get('/api/mirrors/fastest', async (req, res) => {
-  try {
-    const type = req.query.type as string;
-    if (!type) {
-      return res.status(400).json({ error: '请指定镜像类型' });
+    switch (type) {
+      case 'docker':
+        await mirrorManager.configureDockerMirror(url);
+        break;
+      case 'npm':
+        await mirrorManager.configureNpmMirror(url);
+        break;
+      case 'pip':
+        await mirrorManager.configurePipMirror(url);
+        break;
+      case 'apt':
+        await mirrorManager.configureAptMirror(url);
+        break;
+      default:
+        throw new Error('不支持的镜像类型');
     }
-    
-    const mirrorManager = MirrorManager.getInstance();
-    const fastestMirror = await mirrorManager.getFastestMirror(type);
-    res.json(fastestMirror);
+
+    res.json({ message: '镜像配置成功' });
   } catch (error) {
-    res.status(500).json({ error: '获取最快镜像失败' });
+    res.status(500).json({ error: error.message });
   }
 });
+
+// 文件系统路由
+app.use('/api/fs', fileSystemRoutes);
+
+// Docker管理路由
+app.use('/api/docker', dockerRoutes);
 
 // 健康检查
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
+});
+
+// 错误处理中间件
+app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  console.error(err.stack);
+  res.status(500).json({ error: '服务器内部错误' });
 });
 
 // 启动服务器

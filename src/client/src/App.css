@@ -1,0 +1,29 @@
+@import '~antd/dist/antd.css';
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.ant-layout-header {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  z-index: 1;
+}
+
+.ant-card {
+  height: 100%;
+}
+
+.ant-card-body {
+  height: calc(100% - 58px);
+  display: flex;
+  flex-direction: column;
+}
+
+.ant-space-vertical {
+  width: 100%;
+} 
