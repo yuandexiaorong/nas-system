@@ -38,10 +38,11 @@ const DockerManager: React.FC = () => {
   const loadContainers = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('/api/docker/containers?all=true');
-      setContainers(response.data);
+      const response = await axios.get('/api/docker/containers?all=true', { headers: { 'Cache-Control': 'no-cache' } });
+      setContainers(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
       message.error('加载容器列表失败');
+      setContainers([]);
     } finally {
       setLoading(false);
     }
@@ -50,10 +51,11 @@ const DockerManager: React.FC = () => {
   const loadImages = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('/api/docker/images');
-      setImages(response.data);
+      const response = await axios.get('/api/docker/images', { headers: { 'Cache-Control': 'no-cache' } });
+      setImages(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
       message.error('加载镜像列表失败');
+      setImages([]);
     } finally {
       setLoading(false);
     }

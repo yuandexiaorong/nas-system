@@ -6,6 +6,7 @@ import Dashboard from './pages/Dashboard';
 import FileManager from './pages/FileManager';
 import DockerManager from './pages/DockerManager';
 import MirrorManager from './pages/MirrorManager';
+import './App.css';
 
 const { Content } = Layout;
 

@@ -1,14 +1,7 @@
 import React from 'react';
 import { Card, Button, Input, Switch, Space, message } from 'antd';
 import { EditOutlined, SaveOutlined, SyncOutlined } from '@ant-design/icons';
-
-interface Mirror {
-  name: string;
-  type: string;
-  url: string;
-  isActive: boolean;
-  speed?: number;
-}
+import { Mirror } from '../types/mirror';
 
 interface MirrorCardProps {
   mirror: Mirror;
@@ -26,8 +19,9 @@ const MirrorCard: React.FC<MirrorCardProps> = ({ mirror, onUpdate }) => {
       await onUpdate({ ...mirror, url });
       setEditing(false);
       message.success('镜像配置已更新');
-    } catch (error) {
-      message.error('更新失败：' + error.message);
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : '未知错误';
+      message.error('更新失败：' + errorMessage);
     } finally {
       setLoading(false);
     }
@@ -39,8 +33,9 @@ const MirrorCard: React.FC<MirrorCardProps> = ({ mirror, onUpdate }) => {
       // TODO: 实现镜像测速
       await new Promise(resolve => setTimeout(resolve, 1000));
       message.success('测速完成：50ms');
-    } catch (error) {
-      message.error('测速失败：' + error.message);
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : '未知错误';
+      message.error('测速失败：' + errorMessage);
     } finally {
       setLoading(false);
     }
