@@ -1,8 +1,201 @@
-# NAS系统技术文档
+# 网络附属存储管理系统（NAS管理系统）V1.0.0 技术文档
 
-## 1. 系统架构
+## 权利人信息
+- 权利人：梁宏伟（lianghongwei）
+- 版本号：V1.0.0
+- 完成日期：2025-05-27
 
-### 1.1 整体架构
+## 1. 需求分析
+
+### 1.1 用户需求
+```mermaid
+mindmap
+  root((用户需求))
+    个人用户
+      家庭数据存储
+      媒体中心
+      备份系统
+    企业用户
+      文件共享
+      数据备份
+      应用部署
+    教育机构
+      教学资源存储
+      资源共享
+    开发团队
+      代码仓库
+      开发环境
+```
+
+### 1.2 功能需求
+```mermaid
+mindmap
+  root((功能需求))
+    存储管理
+      ZFS文件系统
+      存储池管理
+      数据集管理
+      快照管理
+    应用市场
+      媒体服务
+      云存储
+      下载工具
+    系统监控
+      资源监控
+      进程管理
+      日志分析
+    本地化
+      镜像加速
+      网络优化
+      安全防护
+```
+
+### 1.3 非功能需求
+```mermaid
+mindmap
+  root((非功能需求))
+    性能需求
+      响应时间
+      并发处理
+      资源利用
+    安全需求
+      用户认证
+      数据加密
+      访问控制
+    可靠性需求
+      数据备份
+      故障恢复
+      高可用性
+    可维护性
+      模块化
+      可扩展
+      易维护
+```
+
+## 2. 功能分析
+
+### 2.1 核心功能模块
+```mermaid
+graph TD
+    A[核心功能] --> B[存储管理]
+    A --> C[应用市场]
+    A --> D[系统监控]
+    A --> E[本地化]
+    
+    B --> B1[ZFS管理]
+    B --> B2[文件共享]
+    B --> B3[数据备份]
+    
+    C --> C1[应用安装]
+    C --> C2[应用配置]
+    C --> C3[应用更新]
+    
+    D --> D1[资源监控]
+    D --> D2[进程管理]
+    D --> D3[日志分析]
+    
+    E --> E1[镜像加速]
+    E --> E2[网络优化]
+    E --> E3[安全防护]
+```
+
+### 2.2 功能交互流程
+```mermaid
+sequenceDiagram
+    participant U as 用户
+    participant W as Web界面
+    participant A as API服务
+    participant S as 存储服务
+    participant M as 监控服务
+    
+    U->>W: 登录系统
+    W->>A: 认证请求
+    A->>W: 返回Token
+    W->>U: 显示主界面
+    
+    U->>W: 创建存储池
+    W->>A: 发送请求
+    A->>S: 创建存储池
+    S->>A: 返回结果
+    A->>W: 更新界面
+    W->>U: 显示结果
+    
+    U->>W: 安装应用
+    W->>A: 发送请求
+    A->>S: 检查存储
+    S->>A: 存储状态
+    A->>W: 安装进度
+    W->>U: 显示进度
+```
+
+## 3. 技术选型分析
+
+### 3.1 前端技术栈
+```mermaid
+graph TD
+    A[前端技术栈] --> B[框架]
+    A --> C[UI组件]
+    A --> D[状态管理]
+    A --> E[工具库]
+    
+    B --> B1[React]
+    B --> B2[TypeScript]
+    
+    C --> C1[Ant Design]
+    C --> C2[ECharts]
+    
+    D --> D1[Redux]
+    D --> D2[Redux Toolkit]
+    
+    E --> E1[Axios]
+    E --> E2[Lodash]
+```
+
+### 3.2 后端技术栈
+```mermaid
+graph TD
+    A[后端技术栈] --> B[运行环境]
+    A --> C[Web框架]
+    A --> D[数据库]
+    A --> E[缓存]
+    
+    B --> B1[Node.js]
+    B --> B2[TypeScript]
+    
+    C --> C1[Express]
+    C --> C2[Koa]
+    
+    D --> D1[PostgreSQL]
+    D --> D2[Redis]
+    
+    E --> E1[Redis]
+    E --> E2[Memcached]
+```
+
+### 3.3 部署架构
+```mermaid
+graph TD
+    A[部署架构] --> B[负载均衡]
+    A --> C[应用服务器]
+    A --> D[数据库]
+    A --> E[存储]
+    
+    B --> B1[Nginx]
+    B --> B2[HAProxy]
+    
+    C --> C1[Docker]
+    C --> C2[Kubernetes]
+    
+    D --> D1[PostgreSQL]
+    D --> D2[Redis]
+    
+    E --> E1[ZFS]
+    E --> E2[S3]
+```
+
+## 4. 系统架构
+
+### 4.1 整体架构
 ```mermaid
 graph TD
     A[客户端] --> B[负载均衡器]
@@ -13,7 +206,7 @@ graph TD
     D --> G[存储系统]
 ```
 
-### 1.2 技术架构
+### 4.2 技术架构
 ```mermaid
 graph LR
     A[前端] --> B[API网关]
@@ -23,9 +216,9 @@ graph LR
     C --> F[存储集群]
 ```
 
-## 2. 模块设计
+## 5. 模块设计
 
-### 2.1 前端模块
+### 5.1 前端模块
 ```mermaid
 graph TD
     A[前端应用] --> B[用户界面]
@@ -37,7 +230,7 @@ graph TD
     D --> H[Axios]
 ```
 
-### 2.2 后端模块
+### 5.2 后端模块
 ```mermaid
 graph TD
     A[后端服务] --> B[API服务]
@@ -49,9 +242,9 @@ graph TD
     D --> H[资源监控]
 ```
 
-## 3. 数据库设计
+## 6. 数据库设计
 
-### 3.1 用户表
+### 6.1 用户表
 ```sql
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
@@ -64,7 +257,7 @@ CREATE TABLE users (
 );
 ```
 
-### 3.2 存储池表
+### 6.2 存储池表
 ```sql
 CREATE TABLE storage_pools (
     id SERIAL PRIMARY KEY,
@@ -78,9 +271,9 @@ CREATE TABLE storage_pools (
 );
 ```
 
-## 4. API接口设计
+## 7. API接口设计
 
-### 4.1 用户认证
+### 7.1 用户认证
 ```typescript
 // 登录接口
 POST /api/auth/login
@@ -100,7 +293,7 @@ Response:
 }
 ```
 
-### 4.2 存储管理
+### 7.2 存储管理
 ```typescript
 // 创建存储池
 POST /api/storage/pools
@@ -118,9 +311,9 @@ Response:
 }
 ```
 
-## 5. 部署架构
+## 8. 部署架构
 
-### 5.1 开发环境
+### 8.1 开发环境
 ```mermaid
 graph TD
     A[开发机] --> B[Git仓库]
@@ -129,7 +322,7 @@ graph TD
     A --> E[本地存储]
 ```
 
-### 5.2 生产环境
+### 8.2 生产环境
 ```mermaid
 graph TD
     A[负载均衡器] --> B[Web服务器集群]
@@ -139,9 +332,9 @@ graph TD
     C --> F[存储集群]
 ```
 
-## 6. 测试计划
+## 9. 测试计划
 
-### 6.1 单元测试
+### 9.1 单元测试
 ```typescript
 // 用户服务测试
 describe('UserService', () => {
@@ -157,7 +350,7 @@ describe('UserService', () => {
 });
 ```
 
-### 6.2 集成测试
+### 9.2 集成测试
 ```typescript
 // API测试
 describe('Storage API', () => {
@@ -175,9 +368,9 @@ describe('Storage API', () => {
 });
 ```
 
-## 7. 安全设计
+## 10. 安全设计
 
-### 7.1 认证流程
+### 10.1 认证流程
 ```mermaid
 sequenceDiagram
     Client->>Server: 登录请求
@@ -188,7 +381,7 @@ sequenceDiagram
     Server->>Client: API响应
 ```
 
-### 7.2 权限控制
+### 10.2 权限控制
 ```typescript
 // 权限中间件
 const checkPermission = (permission: string) => {
@@ -204,9 +397,9 @@ const checkPermission = (permission: string) => {
 };
 ```
 
-## 8. 性能优化
+## 11. 性能优化
 
-### 8.1 缓存策略
+### 11.1 缓存策略
 ```typescript
 // Redis缓存
 const cache = new Redis({
@@ -228,7 +421,7 @@ const cacheMiddleware = (duration: number) => {
 };
 ```
 
-### 8.2 数据库优化
+### 11.2 数据库优化
 ```sql
 -- 索引优化
 CREATE INDEX idx_users_username ON users(username);
@@ -243,9 +436,9 @@ CREATE TABLE storage_logs (
 ) PARTITION BY RANGE (created_at);
 ```
 
-## 9. 监控告警
+## 12. 监控告警
 
-### 9.1 监控指标
+### 12.1 监控指标
 ```typescript
 // 系统指标
 interface SystemMetrics {
@@ -270,7 +463,7 @@ interface SystemMetrics {
 }
 ```
 
-### 9.2 告警规则
+### 12.2 告警规则
 ```typescript
 // 告警配置
 const alertRules = {
@@ -289,9 +482,9 @@ const alertRules = {
 };
 ```
 
-## 10. 部署流程
+## 13. 部署流程
 
-### 10.1 Docker部署
+### 13.1 Docker部署
 ```yaml
 # docker-compose.yml
 version: '3'
@@ -319,7 +512,7 @@ services:
     image: redis:6
 ```
 
-### 10.2 部署脚本
+### 13.2 部署脚本
 ```bash
 #!/bin/bash
 # deploy.sh
@@ -342,9 +535,9 @@ npm run build
 pm2 restart all
 ```
 
-## 11. 故障恢复
+## 14. 故障恢复
 
-### 11.1 备份策略
+### 14.1 备份策略
 ```bash
 #!/bin/bash
 # backup.sh
@@ -359,7 +552,7 @@ tar -czf backup/config_$(date +%Y%m%d).tar.gz /etc/nas/
 rclone copy backup remote:nas-backup/
 ```
 
-### 11.2 恢复流程
+### 14.2 恢复流程
 ```bash
 #!/bin/bash
 # restore.sh
